@@ -34,20 +34,33 @@ def asignar_capacidad(equipo: List[Dict], backlog: List[Dict], ruta_salida: str 
     tareas_sin_asignar = []
 
     for tarea in backlog:
-        horas_tarea = int(tarea['horas_estimadas'])
+        horas_restantes_tarea = int(tarea['horas_estimadas'])
         rol_necesario = tarea['rol_requerido']
-        asignada = False
 
         for miembro in equipo:
-            if miembro['rol'] == rol_necesario and miembro['horas_disponibles'] >= horas_tarea:
-                # Asignar tarea
-                miembro['tareas_asignadas'].append(tarea['id_tarea'])
-                miembro['horas_disponibles'] -= horas_tarea
-                asignada = True
-                break
+            # Si el miembro tiene el rol correcto y aún le quedan horas
+            if miembro['rol'] == rol_necesario and miembro['horas_disponibles'] > 0:
+                # Calculamos cuántas horas puede asumir esta persona
+                horas_a_asignar = min(horas_restantes_tarea, miembro['horas_disponibles'])
+                
+                if horas_a_asignar > 0:
+                    # Registramos la tarea y las horas específicas que dedicará
+                    miembro['tareas_asignadas'].append(f"{tarea['id_tarea']} ({horas_a_asignar}h)")
+                    miembro['horas_disponibles'] -= horas_a_asignar
+                    horas_restantes_tarea -= horas_a_asignar
+                
+                # Si la tarea ya se ha completado, salimos del bucle del equipo
+                if horas_restantes_tarea == 0:
+                    break
         
-        if not asignada:
-            tareas_sin_asignar.append(tarea)
+        # Si después de revisar a todo el equipo aún quedan horas pendientes para la tarea
+        if horas_restantes_tarea > 0:
+            tareas_sin_asignar.append({
+                'id_tarea': tarea['id_tarea'],
+                'rol_requerido': rol_necesario,
+                'horas_faltantes': horas_restantes_tarea,
+                'horas_originales': tarea['horas_estimadas']
+            })
 
     # Construir reporte del equipo
     for miembro in equipo:
