@@ -1,0 +1,22 @@
+
+--- RESULTADOS DE ASIGNACIÓN ---
+
+👤 Ana (Backend)
+   Horas restantes: 8h
+   Tareas: T-01, T-04
+------------------------------
+👤 Carlos (Frontend)
+   Horas restantes: 10h
+   Tareas: T-02, T-05
+------------------------------
+👤 Elena (Backend)
+   Horas restantes: 20h
+   Tareas: Ninguna
+------------------------------
+👤 David (DevOps)
+   Horas restantes: 5h
+   Tareas: T-03
+------------------------------
+
+⚠️ Tareas sin asignar:
+   - T-06 (Rol requerido: DevOps, Horas: 8)

@@ -16,14 +16,16 @@ def cargar_csv(ruta_archivo: str) -> List[Dict]:
         sys.exit(1)
     return datos
 
-def asignar_capacidad(equipo: List[Dict], backlog: List[Dict]) -> None:
+def asignar_capacidad(equipo: List[Dict], backlog: List[Dict], ruta_salida: str = None) -> None:
     """
     Lógica base de asignación:
     Intenta asignar cada tarea al primer miembro del equipo que tenga
     el rol adecuado y suficientes horas disponibles.
     """
-    print("\n--- RESULTADOS DE ASIGNACIÓN ---\n")
     
+    reporte = []
+    reporte.append("\n--- RESULTADOS DE ASIGNACIÓN ---\n")
+
     # Convertimos las horas a enteros para poder operar con ellas
     for miembro in equipo:
         miembro['horas_disponibles'] = int(miembro['horas_disponibles'])
@@ -47,22 +49,36 @@ def asignar_capacidad(equipo: List[Dict], backlog: List[Dict]) -> None:
         if not asignada:
             tareas_sin_asignar.append(tarea)
 
-    # Imprimir reporte por consola
+    # Construir reporte del equipo
     for miembro in equipo:
-        print(f"👤 {miembro['nombre']} ({miembro['rol']})")
-        print(f"   Horas restantes: {miembro['horas_disponibles']}h")
+        reporte.append(f"👤 {miembro['nombre']} ({miembro['rol']})")
+        reporte.append(f"   Horas restantes: {miembro['horas_disponibles']}h")
         if miembro['tareas_asignadas']:
-            print(f"   Tareas: {', '.join(miembro['tareas_asignadas'])}")
+            reporte.append(f"   Tareas: {', '.join(miembro['tareas_asignadas'])}")
         else:
-            print("   Tareas: Ninguna")
-        print("-" * 30)
+            reporte.append("   Tareas: Ninguna")
+        reporte.append("-" * 30)
 
     if tareas_sin_asignar:
-        print("\n⚠️ TAREAS SIN ASIGNAR (Falta capacidad o rol adecuado):")
-        for t in tareas_sin_asignar:
-            print(f"   - {t['id_tarea']} ({t['rol_requerido']}): {t['horas_estimadas']}h")
+        reporte.append("\n⚠️ Tareas sin asignar:")
+        for tarea in tareas_sin_asignar:
+            reporte.append(f"   - {tarea['id_tarea']} (Rol requerido: {tarea['rol_requerido']}, Horas: {tarea['horas_estimadas']})")
     else:
-        print("\n✅ Todas las tareas fueron asignadas exitosamente.")
+        reporte.append("\n✅ Todas las tareas fueron asignadas exitosamente.")
+    
+    texto_final = "\n".join(reporte)
+
+    # Mostrar por consola (opcional)
+    print(texto_final)
+
+    # Guardar en archivo si se pasó el argumento
+    if ruta_salida:
+        try:
+            with open(ruta_salida, 'w', encoding='utf-8') as archivo_salida:
+                archivo_salida.write(texto_final)
+            print(f"Entregable de planificación guardado en: {ruta_salida}")
+        except IOError as e:
+            print(f"Error al guardar el archivo: {e}")
 
 def main():
     # Configuración de los argumentos de línea de comandos (CLI)
@@ -84,6 +100,13 @@ def main():
         help='Ruta al archivo CSV con las tareas pendientes'
     )
 
+    parser.add_argument(
+        '-o', '--output', 
+        type=str, 
+        default=None,
+        help='Ruta al archivo de salida para guardar el reporte (opcional)'
+    )
+
     # Parsear los argumentos introducidos por el usuario
     args = parser.parse_args()
 
@@ -94,7 +117,7 @@ def main():
     equipo = cargar_csv(args.equipo)
     backlog = cargar_csv(args.backlog)
     
-    asignar_capacidad(equipo, backlog)
+    asignar_capacidad(equipo, backlog, args.output)
 
 if __name__ == "__main__":
     # Ejecutar en primer lugar python allocator.py --help para saber cómo usar la herramienta
