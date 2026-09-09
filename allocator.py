@@ -33,6 +33,10 @@ def asignar_capacidad(equipo: List[Dict], backlog: List[Dict], ruta_salida: str 
 
     tareas_sin_asignar = []
 
+    # Reordenar las tareas por prioridad
+    prioridades = {"Alta": 1, "Media": 2, "Baja": 3}
+    backlog.sort(key=lambda x: prioridades.get(x['prioridad'], 4))
+
     for tarea in backlog:
         horas_restantes_tarea = int(tarea['horas_estimadas'])
         rol_necesario = tarea['rol_requerido']

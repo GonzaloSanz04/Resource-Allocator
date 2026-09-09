@@ -1,7 +1,7 @@
-id_tarea,descripcion,rol_requerido,horas_estimadas
-T-01,Crear API de usuarios,Backend,12
-T-02,Diseñar landing page,Frontend,20
-T-03,Configurar pipeline CI/CD,DevOps,10
-T-04,Optimizar base de datos,Backend,15
-T-05,Corregir bugs UI,Frontend,10
-T-06,Migrar servidor,DevOps,8
+id_tarea,descripcion,rol_requerido,horas_estimadas, prioridad
+T-01,Crear API de usuarios,Backend,12, baja
+T-02,Diseñar landing page,Frontend,20, alta
+T-03,Configurar pipeline CI/CD,DevOps,10, media
+T-04,Optimizar base de datos,Backend,15, baja
+T-05,Corregir bugs UI,Frontend,10, alta
+T-06,Migrar servidor,DevOps,8, alta
