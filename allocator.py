@@ -75,7 +75,7 @@ def asignar_capacidad(equipo: List[Dict], backlog: List[Dict], ruta_salida: str 
     if tareas_sin_asignar:
         reporte.append("\n⚠️ Tareas sin asignar:")
         for tarea in tareas_sin_asignar:
-            reporte.append(f"   - {tarea['id_tarea']} (Rol requerido: {tarea['rol_requerido']}, Horas: {tarea['horas_estimadas']})")
+            reporte.append(f"   - {tarea['id_tarea']} (Rol requerido: {tarea['rol_requerido']}, Faltan: {tarea['horas_faltantes']}h de {tarea['horas_originales']})")
     else:
         reporte.append("\n✅ Todas las tareas fueron asignadas exitosamente.")
     
@@ -130,7 +130,7 @@ def main():
     equipo = cargar_csv(args.equipo)
     backlog = cargar_csv(args.backlog)
     
-    asignar_capacidad(equipo, backlog, args.output)
+    asignar_capacidad(equipo, backlog, "data/" + args.output if args.output else None)
 
 if __name__ == "__main__":
     # Ejecutar en primer lugar python allocator.py --help para saber cómo usar la herramienta

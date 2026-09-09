@@ -3,20 +3,20 @@
 
 👤 Ana (Backend)
    Horas restantes: 8h
-   Tareas: T-01, T-04
+   Tareas: T-01 (12h), T-04 (15h)
 ------------------------------
 👤 Carlos (Frontend)
    Horas restantes: 10h
-   Tareas: T-02, T-05
+   Tareas: T-02 (20h), T-05 (10h)
 ------------------------------
 👤 Elena (Backend)
    Horas restantes: 20h
    Tareas: Ninguna
 ------------------------------
 👤 David (DevOps)
-   Horas restantes: 5h
-   Tareas: T-03
+   Horas restantes: 0h
+   Tareas: T-03 (10h), T-06 (5h)
 ------------------------------
 
 ⚠️ Tareas sin asignar:
-   - T-06 (Rol requerido: DevOps, Horas: 8)
+   - T-06 (Rol requerido: DevOps, Faltan: 3h de 8)
